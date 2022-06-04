@@ -1,0 +1,128 @@
+{
+	"info": {
+		"_postman_id": "57205ea2-a7fb-4e28-9e9e-d6989080f129",
+		"name": "Skinnoir",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"host": true,
+					"connection": true,
+					"user-agent": true,
+					"content-length": true,
+					"accept-encoding": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"user1\",\r\n    \"email\": \"user1@google.com\",\r\n    \"password\": \"123456789\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"connection": true,
+					"accept-encoding": true,
+					"host": true,
+					"content-length": true,
+					"user-agent": true,
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"basitaliahmed.786@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User by Token",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"connection": true,
+					"accept-encoding": true,
+					"accept": true,
+					"user-agent": true,
+					"host": true,
+					"content-length": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI5YTk2OGQzZjkzOTgyY2Q1ZGFiNDQ2In0sImlhdCI6MTY1NDMwMDAyMH0.yjI0RyC49mr3eTesLU5HB9nSvF64BE7kRZ3k-3Wviy4",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5000/api/auth/getuser",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"auth",
+						"getuser"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
