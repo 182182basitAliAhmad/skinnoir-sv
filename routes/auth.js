@@ -13,40 +13,40 @@ const SALT_NUMBER = 10
 // Route 1: register with a POST api
 
 router.post('/register', [
-    body('name', 'Enter a valid name').isLength({min: 3}),
-    body('email', 'Enter a valid email').isEmail(),
-    body('password', 'Password must be atleast 6 characters').isLength({ min: 6 })
-], async (req, res) => {  
-    const errors = validationResult(req)
-    if (!errors.isEmpty())
-        return res.status(400).json({errors: errors.array()})
+  body('name', 'Enter a valid name').isLength({ min: 3 }),
+  body('email', 'Enter a valid email').isEmail(),
+  body('password', 'Password must be atleast 6 characters').isLength({ min: 6 })
+], async (req, res) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty())
+    return res.status(400).json({ errors: errors.array() })
 
-    try {
-        let user = await User.findOne({ email: req.body.email });
-        if (user)
-            return res.status(409).json({ error: "Sorry a user with this email already exists" })
+  try {
+    let user = await User.findOne({ email: req.body.email });
+    if (user)
+      return res.status(409).json({ error: "Sorry a user with this email already exists" })
 
-        const salt = await bcrypt.genSalt(SALT_NUMBER);
-        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    const salt = await bcrypt.genSalt(SALT_NUMBER);
+    const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
-        user = await User.create({
-            name: req.body.name,
-            password: hashedPassword,
-            email: req.body.email,
-        });
+    user = await User.create({
+      name: req.body.name,
+      password: hashedPassword,
+      email: req.body.email,
+    });
 
-        const data = {
-            user: {
-                id: user.id
-            }
-        }
-        const authToken = jwt.sign(data, JWT_SECRET);
-
-        return res.status(201).json({ authToken })
-    } catch (error) {
-        console.error(error.message);
-        return res.status(500).send("Internal Server Error");
+    const data = {
+      user: {
+        id: user.id
+      }
     }
+    const authToken = jwt.sign(data, JWT_SECRET);
+
+    return res.status(201).json({ authToken })
+  } catch (error) {
+    console.error(error.message);
+    return res.status(500).send("Internal Server Error");
+  }
 })
 
 
@@ -87,6 +87,27 @@ router.post('/login', [
   }
 
 });
+
+router.post('/updateprofile', [
+  body('name', 'Enter a valid name').isLength({ min: 3 })], fetchUser, async (req, res) => {
+    const errors = validationResult(req);
+    console.log(errors)
+    console.log(req.body)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+      let userID = req.user.id;
+      const user = await User.findOneAndUpdate(req.body, { upsert: true})
+
+      if (user)
+        return res.status(200).send('Profile updated')
+    } catch (err) {
+      console.error(err)
+      res.status(500).send("Internal Server Error")
+    }
+  })
 
 
 router.post('/getuser', fetchUser, async (req, res) => {
